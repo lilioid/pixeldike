@@ -59,8 +59,8 @@ impl WsServer {
             };
             let result = super::handle_request(request, &pixmap);
             match result {
-                Err(e) => stream.send(Message::Text(e)).await?,
-                Ok(Some(response)) => stream.send(Message::Text(format!("{}", response))).await?,
+                Err(e) => stream.send(Message::Text(e.into())).await?,
+                Ok(Some(response)) => stream.send(Message::Text(format!("{}", response).into())).await?,
                 Ok(None) => {}
             }
         }
