@@ -34,7 +34,7 @@
           RUSTFLAGS = "--cfg tokio_unstable ";
         };
         pixeldike-oci = pkgs.dockerTools.buildLayeredImage {
-          name = "ghcr.io/ftsell/pixeldike";
+          name = "ghcr.io/lilioid/pixeldike";
           tag = "latest";
           config = {
             Cmd = [ "${pixeldike}/bin/pixeldike" ];

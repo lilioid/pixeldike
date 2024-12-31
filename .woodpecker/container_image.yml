@@ -7,10 +7,14 @@ steps:
       - event: cron
       - event: manual
     image: docker.io/nixos/nix
+    environment:
+      FORGEJO_PACKAGES_ACCESS:
+        from_secret: FORGEJO_PACKAGES_ACCESS
+      GITHUB_PACKAGES_ACCESS:
+        from_secret: GITHUB_PACKAGES_ACCESS
     privileged: true
-    secrets: [ "FORGEJO_PACKAGES_ACCESS", "GITHUB_PACKAGES_ACCESS" ]
     commands:
-      - nix --extra-experimental-features "nix-command flakes" build -o container.tar.gz.lnk ".#homepage-oci"
+      - nix --extra-experimental-features "nix-command flakes" build -o container.tar.gz.lnk ".#pixeldike-oci"
       - cp $(realpath container.tar.gz.lnk) container.tar.gz
 
   - name: publish container image
@@ -22,7 +26,11 @@ steps:
       - event: cron
         cron: periodic-rebuild
     image: quay.io/containers/skopeo
-    secrets: [ "FORGEJO_PACKAGES_ACCESS", "GITHUB_PACKAGES_ACCESS" ]
+    environment:
+      FORGEJO_PACKAGES_ACCESS:
+        from_secret: FORGEJO_PACKAGES_ACCESS
+      GITHUB_PACKAGES_ACCESS:
+        from_secret: GITHUB_PACKAGES_ACCESS
     commands:
-      - skopeo copy --dest-username ftsell --dest-password $FORGEJO_PACKAGES_ACCESS docker-archive:container.tar.gz docker://git.lly.sh/ftsell/homepage
-      - skopeo copy --dest-username ftsell --dest-password $GITHUB_PACKAGES_ACCESS docker-archive:container.tar.gz docker://ghcr.io/ftsell/homepage
+      - skopeo copy --dest-username lilly --dest-password $FORGEJO_PACKAGES_ACCESS docker-archive:container.tar.gz docker://git.lly.sh/lilly/pixeldike
+      - skopeo copy --dest-username lilioid --dest-password $GITHUB_PACKAGES_ACCESS docker-archive:container.tar.gz docker://ghcr.io/lilioid/pixeldike
