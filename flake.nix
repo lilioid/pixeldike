@@ -37,7 +37,7 @@
           name = "ghcr.io/lilioid/pixeldike";
           tag = "latest";
           config = {
-            Cmd = [ "${pixeldike}/bin/pixeldike" ];
+            Entrypoint = [ "${pixeldike}/bin/pixeldike" ];
             User = "1000:1000";
           };
         };
