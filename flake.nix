@@ -36,8 +36,9 @@
         pixeldike-oci = pkgs.dockerTools.buildLayeredImage {
           name = "ghcr.io/lilioid/pixeldike";
           tag = "latest";
+          contents = [ pixeldike pkgs.ffmpeg ];
           config = {
-            Entrypoint = [ "${pixeldike}/bin/pixeldike" ];
+            Entrypoint = [ "/bin/pixeldike" ];
             User = "1000:1000";
           };
         };
