@@ -1,7 +1,7 @@
 #![feature(never_type)]
 #![feature(sync_unsafe_cell)]
-#![feature(int_roundings)]
-#![feature(test)]
+#![feature(int_from_ascii)]
+#![cfg_attr(test, feature(test))]
 #![deny(trivial_casts)]
 #![warn(
     rustdoc::missing_crate_level_docs,

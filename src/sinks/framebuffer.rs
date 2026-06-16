@@ -50,13 +50,13 @@ impl Sampler {
     }
 
     #[inline(always)]
-    pub unsafe fn get_mappin_unchecked(&self, i_screen_px: usize) -> usize {
+    pub unsafe fn get_mappin_unchecked(&self, i_screen_px: usize) -> usize { unsafe {
         *self
             .mapping
             .as_ref()
             .unwrap_unchecked()
             .get_unchecked(i_screen_px) as usize
-    }
+    }}
 }
 
 /// Options for configuring a [`FramebufferSink`]

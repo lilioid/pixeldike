@@ -89,14 +89,17 @@ impl Pixmap {
     /// data this has show to be fine.
     #[allow(clippy::mut_from_ref)]
     pub(crate) unsafe fn get_color_data(&self) -> &mut [Color] {
-        &mut *self.data.get()
+        unsafe {
+            let ptr = self.data.get();
+            ptr.as_mut_unchecked()
+        }
     }
 }
 
 #[cfg(test)]
 mod test {
     use super::*;
-    use quickcheck::{quickcheck, TestResult};
+    use quickcheck::{TestResult, quickcheck};
 
     quickcheck! {
         fn test_set_and_get_pixel(x: usize, y: usize) -> TestResult {
