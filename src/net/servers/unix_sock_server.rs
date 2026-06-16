@@ -1,6 +1,6 @@
+use crate::DaemonResult;
 use crate::net::servers::GenServer;
 use crate::pixmap::SharedPixmap;
-use crate::DaemonResult;
 use async_trait::async_trait;
 use bytes::{BufMut, BytesMut};
 use std::io::Write;
@@ -53,7 +53,7 @@ impl UnixSocketServer {
             tracing::trace!("Received {}KiB stream data: {:?}", n / 1024, req_buf);
 
             // handle all lines contained in the buffer
-            while let Some((i, _)) = req_buf.iter().enumerate().find(|(_, &b)| b == b'\n') {
+            while let Some((i, _)) = req_buf.iter().enumerate().find(|(_, b)| b == &&b'\n') {
                 let line = req_buf.split_to(i + 1);
                 let result = super::handle_request(&line, &pixmap);
                 match result {

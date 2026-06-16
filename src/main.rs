@@ -1,8 +1,6 @@
-#![feature(never_type)]
-
 use ab_glyph::{Font, FontRef};
-use bytes::buf::Writer;
 use bytes::BytesMut;
+use bytes::buf::Writer;
 use clap::Parser;
 use image::imageops::FilterType;
 use rand::prelude::*;
@@ -21,6 +19,7 @@ use tracing_subscriber::util::SubscriberInitExt;
 use crate::cli::{CliOpts, TargetColor};
 use image::ImageReader;
 use itertools::Itertools;
+use pixeldike::DaemonResult;
 use pixeldike::net::protocol::Request;
 use pixeldike::net::servers::{GenServer, TcpServer, TcpServerOptions, UnixSocketOptions, UnixSocketServer};
 #[cfg(feature = "udp")]
@@ -31,7 +30,6 @@ use pixeldike::pixmap::{Color, Pixmap};
 use pixeldike::sinks::ffmpeg::{FfmpegOptions, FfmpegSink};
 use pixeldike::sinks::framebuffer::{FramebufferSink, FramebufferSinkOptions};
 use pixeldike::sinks::pixmap_file::{FileSink, FileSinkOptions};
-use pixeldike::DaemonResult;
 
 mod cli;
 mod main_utils;
@@ -104,10 +102,10 @@ async fn start_server(opts: &cli::ServerOpts) {
                     let (width, height) = loaded_pixmap.get_size();
                     if width != opts.width || height != opts.height {
                         tracing::warn!(
-                    "Stored snapshot has different dimensions than {}x{}, creating an empty pixmap instead",
-                    opts.width,
-                    opts.height
-                );
+                            "Stored snapshot has different dimensions than {}x{}, creating an empty pixmap instead",
+                            opts.width,
+                            opts.height
+                        );
                         Arc::new(Pixmap::new(opts.width, opts.height).unwrap())
                     } else {
                         Arc::new(loaded_pixmap)

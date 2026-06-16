@@ -1,4 +1,4 @@
-use crate::net::protocol::{parse_response_bin, Request, Response};
+use crate::net::protocol::{CompliantParser, Request, Response, ResponseParser};
 use anyhow::anyhow;
 use bytes::{BufMut, BytesMut};
 use std::net::SocketAddr;
@@ -40,7 +40,7 @@ impl UdpClient {
         self.socket.recv_buf(&mut buf).await?;
         match buf.iter().enumerate().find(|(_, b)| **b == b'\n') {
             Some((i, _)) => {
-                let response = parse_response_bin(&buf[0..i])?;
+                let response = CompliantParser.parse_response_bin(&buf[0..i])?;
                 Ok(response)
             }
             None => Err(anyhow!("server did not return a valid response line")),

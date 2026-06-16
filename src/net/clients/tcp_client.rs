@@ -1,8 +1,8 @@
-use crate::net::protocol::{parse_response_str, Request, Response};
+use crate::net::protocol::{CompliantParser, Request, Response, ResponseParser};
 use std::net::SocketAddr;
 use tokio::io::{AsyncBufReadExt, AsyncWrite, AsyncWriteExt, BufReader, BufWriter};
-use tokio::net::tcp::{OwnedReadHalf, OwnedWriteHalf};
 use tokio::net::TcpStream;
+use tokio::net::tcp::{OwnedReadHalf, OwnedWriteHalf};
 
 /// A pixelflut client that uses TCP and buffered read/write for communication with a pixelflut server.
 #[derive(Debug)]
@@ -33,7 +33,7 @@ impl TcpClient {
     pub async fn await_response(&mut self) -> anyhow::Result<Response> {
         let mut buf = String::with_capacity(32);
         self.reader.read_line(&mut buf).await?;
-        let response = parse_response_str(&buf)?;
+        let response = CompliantParser.parse_response_bin(buf.as_bytes())?;
         Ok(response)
     }
 

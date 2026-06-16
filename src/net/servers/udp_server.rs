@@ -1,6 +1,6 @@
+use crate::DaemonResult;
 use crate::net::servers::gen_server::GenServer;
 use crate::pixmap::SharedPixmap;
-use crate::DaemonResult;
 use async_trait::async_trait;
 use bytes::{BufMut, Bytes, BytesMut};
 use std::io::Write;
@@ -79,7 +79,7 @@ impl UdpServer {
         let mut resp_buf = BytesMut::with_capacity(2 * 1024).writer();
 
         // handle all lines contained in the request buffer
-        while let Some((i, _)) = buf.iter().enumerate().find(|(_, &b)| b == b'\n') {
+        while let Some((i, _)) = buf.iter().enumerate().find(|(_, b)| b == &&b'\n') {
             let line = buf.split_to(i + 1);
             let result = super::handle_request(&line, &pixmap);
             match result {

@@ -15,7 +15,7 @@ mod unix_sock_server;
 #[cfg(feature = "ws")]
 mod ws_server;
 
-use crate::net::protocol::{parse_request_bin, Request, Response};
+use crate::net::protocol::{CompliantParser, Request, RequestParser, Response};
 use crate::pixmap::SharedPixmap;
 
 #[cfg(feature = "tcp")]
@@ -41,7 +41,7 @@ fn handle_request(line: &[u8], pixmap: &SharedPixmap) -> Result<Option<Response>
         }
     );
 
-    let parse_result = parse_request_bin(line);
+    let parse_result = CompliantParser.parse_request_bin(line);
     match parse_result {
         Err(e) => Err(e.to_string()),
         Ok(request) => match request {
