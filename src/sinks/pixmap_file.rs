@@ -1,7 +1,7 @@
 //! A sink for periodically snapshotting the canvas into a pixmap file
 
-use crate::pixmap::{Pixmap, SharedPixmap};
 use crate::DaemonResult;
+use crate::pixmap::{Pixmap, SharedPixmap};
 use anyhow::anyhow;
 use itertools::Itertools;
 use std::io::SeekFrom;
@@ -157,7 +157,7 @@ mod test {
     #[tokio::test]
     async fn test_store_and_load() {
         let dir = tempfile::tempdir().unwrap();
-        let file_path = dir.into_path().join("test.pixmap");
+        let file_path = dir.keep().join("test.pixmap");
         let original_pixmap = Arc::new(Pixmap::new(5, 5).unwrap());
         original_pixmap
             .set_pixel(0, 0, Color::from((0xab, 0xab, 0xab)))
